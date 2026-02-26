@@ -3,7 +3,9 @@ package com.example.LibraryManagementSystem.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
+import javax.persistence.GeneratedValue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -12,6 +14,7 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Data
 public class BookDto {
+    @Nullable
     private Long id;
     @NotBlank(message = "Title is required")
     private String title;
@@ -22,5 +25,4 @@ public class BookDto {
     private boolean available;
     @NotNull(message = "Author id is required")
     private Long authorId;
-    private String authorName;
 }
