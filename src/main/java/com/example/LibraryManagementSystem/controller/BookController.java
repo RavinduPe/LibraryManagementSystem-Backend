@@ -4,6 +4,7 @@ import com.example.LibraryManagementSystem.dto.BookDto;
 import com.example.LibraryManagementSystem.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity< BookDto > saveBook(@Valid @RequestBody BookDto bookDto)
     {
@@ -27,17 +29,22 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('USER','ADMIN')")
     @GetMapping()
     public ResponseEntity<List<BookDto>> getAllBook(){
         List<BookDto> books = bookService.getAllBooks();
 
         return ResponseEntity.ok(books);
     }
+
+    @PreAuthorize("hasRole('USER','ADMIN')")
     @GetMapping("{bookId}")
     public ResponseEntity<BookDto> getBookById(@PathVariable String bookId){
         BookDto book = bookService.getBookById(bookId);
         return ResponseEntity.ok(book);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{bookId}")
     public ResponseEntity<String> deleteBookById(@PathVariable String bookId)
     {
@@ -45,6 +52,7 @@ public class BookController {
         return ResponseEntity.ok(confirmResponse);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{bookId}")
     public  ResponseEntity<String> updateBookById(@PathVariable String bookId , @RequestBody Map<String, String> requestBody)
     {

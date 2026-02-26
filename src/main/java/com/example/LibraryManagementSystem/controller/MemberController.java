@@ -5,6 +5,7 @@ import com.example.LibraryManagementSystem.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto memberDto){
         MemberDto response = memberService.createMember(memberDto);
@@ -26,6 +28,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PreAuthorize("hasRole('USER','ADMIN')")
     @GetMapping()
     public ResponseEntity<List<MemberDto>> getAllMembers(){
         List<MemberDto> members = memberService.getAllMembers();
@@ -33,6 +36,7 @@ public class MemberController {
         return ResponseEntity.ok(members);
     }
 
+    @PreAuthorize("hasRole('USER','ADMIN')")
     @GetMapping("{memberId}")
     public ResponseEntity<MemberDto> getMemberBid(@PathVariable String memberId){
         Long id = Long.parseLong(memberId);
@@ -41,6 +45,7 @@ public class MemberController {
         return ResponseEntity.ok(memberDto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{memberId}")
     public  ResponseEntity<String> updateAuthorById(@PathVariable String memberId , @RequestBody Map<String, String> requestBody)
     {
@@ -50,7 +55,7 @@ public class MemberController {
         return ResponseEntity.ok(updateResponse);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{memberId}")
     public ResponseEntity<String> deleteMemberBYid(@PathVariable String memberId)
     {
