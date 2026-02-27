@@ -29,7 +29,7 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping()
     public ResponseEntity<List<AuthorDto>> getAllAuthors()
     {
@@ -38,7 +38,7 @@ public class AuthorController {
         return ResponseEntity.ok(authors);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("{authorId}")
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable String authorId)
     {

@@ -19,6 +19,8 @@ public class Book {
     private String genre;
     private double price;
     private boolean available;
+    private int totalCopies;       // total books available
+    private int availableCopies;   // currently available
 
     @ManyToOne
     @JoinColumn(name = "author_id")

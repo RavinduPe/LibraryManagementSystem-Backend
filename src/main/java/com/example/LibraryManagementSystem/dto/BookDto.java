@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.GeneratedValue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -14,15 +13,27 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Data
 public class BookDto {
+
     @Nullable
     private Long id;
+
     @NotBlank(message = "Title is required")
     private String title;
+
     @NotBlank(message = "Genre is required")
     private String genre;
+
     @Positive(message = "Price must be positive")
     private double price;
+
     private boolean available;
+
+    @Positive(message = "Total copies must be positive")
+    private int totalCopies;
+
+
     @NotNull(message = "Author id is required")
     private Long authorId;
+
+    private String authorName; // optional: for response
 }

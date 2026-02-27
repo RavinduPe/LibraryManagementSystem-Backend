@@ -28,7 +28,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping()
     public ResponseEntity<List<MemberDto>> getAllMembers(){
         List<MemberDto> members = memberService.getAllMembers();
@@ -36,7 +36,7 @@ public class MemberController {
         return ResponseEntity.ok(members);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("{memberId}")
     public ResponseEntity<MemberDto> getMemberBid(@PathVariable String memberId){
         Long id = Long.parseLong(memberId);

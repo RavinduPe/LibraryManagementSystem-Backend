@@ -29,7 +29,7 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping()
     public ResponseEntity<List<BookDto>> getAllBook(){
         List<BookDto> books = bookService.getAllBooks();
@@ -37,7 +37,7 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
-    @PreAuthorize("hasRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("{bookId}")
     public ResponseEntity<BookDto> getBookById(@PathVariable String bookId){
         BookDto book = bookService.getBookById(bookId);
@@ -62,12 +62,14 @@ public class BookController {
         return ResponseEntity.ok(updateResponse);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/borrow")
     public ResponseEntity<String> barrowBook(@RequestParam Long memberId , @RequestParam Long bookId){
         bookService.borrowBook(memberId,bookId);
         return ResponseEntity.ok("Book borrowed successfully");
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/return")
     public ResponseEntity<String> returnBook(@RequestParam Long memberId, @RequestParam Long bookId){
         bookService.returnBook(memberId,bookId);
