@@ -1,5 +1,6 @@
 package com.example.LibraryManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "authors")
+@JsonIgnoreProperties({"books", "hibernateLazyInitializer", "handler"})
 public class Author {
 
     @Id
@@ -19,7 +21,7 @@ public class Author {
     @Column(length = 1000)
     private String bio;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
     // Constructors

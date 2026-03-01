@@ -1,9 +1,10 @@
 package com.example.LibraryManagementSystem.controller;
 
+import com.example.LibraryManagementSystem.dto.BorrowDTO;
 import com.example.LibraryManagementSystem.dto.BorrowRequestDTO;
-import com.example.LibraryManagementSystem.entity.Borrow;
 import com.example.LibraryManagementSystem.service.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +23,17 @@ public class BorrowController {
     @PostMapping("/user/borrow")
     public ResponseEntity<?> borrowBook(@RequestBody BorrowRequestDTO borrowRequest) {
         try {
-            Borrow borrow = borrowService.borrowBook(borrowRequest);
+            BorrowDTO borrow = borrowService.borrowBook(borrowRequest);
             return ResponseEntity.ok(borrow);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @PostMapping("/user/return/{borrowId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/admin/return/{borrowId}")
     public ResponseEntity<?> returnBook(@PathVariable Long borrowId) {
         try {
-            Borrow borrow = borrowService.returnBook(borrowId);
+            BorrowDTO borrow = borrowService.returnBook(borrowId);
             return ResponseEntity.ok(borrow);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -40,20 +41,32 @@ public class BorrowController {
     }
 
     @GetMapping("/user/borrows")
-    public ResponseEntity<List<Borrow>> getMyBorrows() {
+    public ResponseEntity<List<BorrowDTO>> getMyBorrows() {
         return ResponseEntity.ok(borrowService.getCurrentUserBorrows());
     }
 
     // ADMIN endpoints
     @GetMapping("/admin/borrows")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<Borrow>> getAllBorrows() {
-        return ResponseEntity.ok(borrowService.getAllBorrows());
+    public ResponseEntity<List<BorrowDTO>> getAllBorrows() {
+        try {
+            List<BorrowDTO> borrows = borrowService.getAllBorrows();
+            return ResponseEntity.ok(borrows);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/admin/borrows/active")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<Borrow>> getActiveBorrows() {
-        return ResponseEntity.ok(borrowService.getActiveBorrows());
+    public ResponseEntity<List<BorrowDTO>> getActiveBorrows() {
+        try {
+            List<BorrowDTO> activeBorrows = borrowService.getActiveBorrows();
+            return ResponseEntity.ok(activeBorrows);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

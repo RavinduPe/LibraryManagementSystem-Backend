@@ -1,9 +1,9 @@
 package com.example.LibraryManagementSystem.entity;
 
 import com.example.LibraryManagementSystem.enums.Role;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"password", "borrows"})  // Ignore password and borrows by default
 public class User {
 
     @Id
@@ -29,7 +30,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "user-borrows")  // Manages the forward part of reference
     private List<Borrow> borrows = new ArrayList<>();
 
     // Constructors

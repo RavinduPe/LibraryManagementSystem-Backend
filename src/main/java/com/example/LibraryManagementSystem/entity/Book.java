@@ -1,5 +1,6 @@
 package com.example.LibraryManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -7,6 +8,7 @@ import javax.validation.constraints.Positive;
 
 @Entity
 @Table(name = "books")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Book {
 
     @Id
@@ -25,8 +27,9 @@ public class Book {
     @Column(name = "available")
     private boolean available = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
+    @JsonIgnoreProperties({"books", "bio"})  // Include only author name and id
     private Author author;
 
     // Constructors
