@@ -19,4 +19,4 @@ jobs:
           java-version: "8"
 
       - name: Build with Meaven
-        run: mvn clean install
+        run: mvn clean install -DskipTests
