@@ -1,4 +1,4 @@
-package com.example.LibraryManagementSystem.config;
+package com.example.LibraryManagementSystem.security;
 
 import com.example.LibraryManagementSystem.security.CustomUserDetailsService;
 import com.example.LibraryManagementSystem.security.JwtAuthenticationFilter;
