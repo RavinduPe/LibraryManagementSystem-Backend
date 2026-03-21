@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173") // Your Vue.js frontend URL
+                .allowedOriginPatterns("http://localhost:5173","https://library-management-system-frontend-a3vli7c0b.vercel.app/") // Your Vue.js frontend URL
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .allowCredentials(true)
